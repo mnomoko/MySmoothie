@@ -5,20 +5,23 @@ class NavBarComponent extends Component {
 
     render() {
         return (
-            <Navbar>
+            <Navbar inverse collapseOnSelect>
                 <Navbar.Header>
                     <Navbar.Brand>
-                        <a href="/">Accueil</a>
+                        <a href="/">My Smoothie</a>
                     </Navbar.Brand>
+                    <Navbar.Toggle />
                 </Navbar.Header>
-                <Nav>
-                    <NavItem eventKey={1} href="/smoothies">
-                        Smoothies
-                    </NavItem>
-                    <NavItem eventKey={2} href="/creations">
-                        Creations
-                    </NavItem>
-                </Nav>
+                <Navbar.Collapse>
+                    <Nav>
+                        <NavItem eventKey={1} href="/smoothies">
+                            Smoothies
+                        </NavItem>
+                        <NavItem eventKey={2} href="/creations">
+                            Creations
+                        </NavItem>
+                    </Nav>
+                </Navbar.Collapse>
             </Navbar>
         )
     }

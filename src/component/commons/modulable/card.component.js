@@ -7,7 +7,7 @@ class CardComponent extends Component {
         super(props);
 
         this.state = {
-            xs: props.xs ? props.xs : 6,
+            xs: props.xs ? props.xs : 12,
             md: props.md ? props.md : 4,
             title: props.title,
             description: props.description,

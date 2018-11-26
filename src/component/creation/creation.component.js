@@ -2,18 +2,35 @@ import React, { Component } from 'react';
 import {Button, ButtonGroup, Col, Form, Row} from "react-bootstrap";
 import SelectorComponent from "../commons/modulable/selector/selector.component";
 import '../../index.css';
-const fruits = require('../commons/fruits');
+import FRUITS from './../commons/fruits';
+import JUICES from './../commons/juices';
 
 class CreationComponent extends Component {
 
     constructor (props) {
         super(props);
 
-        this.state = { typeSelected: [], numberSelected: 2, numberPersSelected: 2 };
+        this.state = {
+            typeSelected: [],
+            numberSelected: 2,
+            numberPersSelected: 2,
+            selectedJuice: undefined,
+            selectedSmoothieArray: [],
+            selectedSmoothiesOptionsArray: [],
+            options: [...JUICES.map(opt => ({ label: opt.name, value: opt }))]
+        };
 
         this.onCheckboxNumberClick = this.onCheckboxNumberClick.bind(this);
         this.onCheckboxNumberPersClick = this.onCheckboxNumberPersClick.bind(this);
         this.onCheckboxTypeClick = this.onCheckboxTypeClick.bind(this);
+
+        let selectedSmoothieArray = [];
+        for(let i = 0; i < this.state.numberSelected; i++) {
+            let array = [...FRUITS.map(opt => ({ label: opt.name, value: opt }))];
+            selectedSmoothieArray[i] = array[i];
+        }
+        this.state.selectedSmoothieArray = selectedSmoothieArray;
+        this.state.selectedSmoothiesOptionsArray = [...FRUITS.map(opt => ({ label: opt.name, value: opt }))];
     }
 
     onCheckboxNumberClick(numberSelected) {
@@ -34,17 +51,33 @@ class CreationComponent extends Component {
         this.setState({ typeSelected: [...this.state.typeSelected] });
     }
 
-    generateSmoothie() {
+    onSelectionSmoothie(index, option) {
+        let selectedSmoothieArray = this.state.selectedSmoothieArray;
+        selectedSmoothieArray[index] = option;
+        this.setState(selectedSmoothieArray);
+    };
 
+    onSelectionJuice(index ,option) {
+        this.setState({selectedJuice: option});
+    };
+
+    generateSmoothie() {
+        let { selectedJuice, selectedSmoothieArray } = this.state;
+        let fruit = selectedSmoothieArray[0];
+
+        let preparation = selectedSmoothieArray.map(e => e.value.preparation + ' ');
+
+        console.log('fruit : ' + fruit);
+        console.log('selectedJuice : ' + selectedJuice);
+        console.log('preparation : ' + preparation);
     }
 
     render() {
-        let options = [{id: 1, text: 'option 1'}, {id: 2, text: 'option 2'}, {id: 3, text: 'option 3'}];
-        options = fruits;
+        let { options, selectedSmoothieArray, selectedSmoothiesOptionsArray } = this.state;
         return(
             <div className="container">
                 <Form>
-                    <Row form>
+                    <Row>
                         <Col sm={12} md={6}>
                             <div>
                                 <h5>Type de smoothie</h5>
@@ -54,7 +87,6 @@ class CreationComponent extends Component {
                                     <Button color="primary" onClick={() => this.onCheckboxTypeClick(3)} active={this.state.typeSelected.includes(3)}>Sucré</Button>
                                     <Button color="primary" onClick={() => this.onCheckboxTypeClick(4)} active={this.state.typeSelected.includes(4)}>Salé</Button>
                                 </ButtonGroup>
-                                <p>Selected: {JSON.stringify(this.state.typeSelected)}</p>
                             </div>
                         </Col>
                         <Col sm={12} md={6}>
@@ -71,13 +103,13 @@ class CreationComponent extends Component {
                         </Col>
                     </Row>
 
-                    <Row form>
-                    {this.state.numberSelected && [...Array(this.state.numberSelected)].map((x, i) =>
-                        <SelectorComponent titre={'Selectionner un fruit'} options={options} isJsonObject={true}/>
+                    <Row>
+                    {this.state.numberSelected && [...Array(this.state.numberSelected)].map((i, index) =>
+                        <SelectorComponent key={index} cle={index} titre={'Selectionner un fruit'} selected={selectedSmoothieArray[index]} options={selectedSmoothiesOptionsArray} selectionChange={this.onSelectionSmoothie.bind(this)} isJsonObject={true}/>
                     )}
                     </Row>
-                    <Row form>
-                        <SelectorComponent titre={'Selectionner un jus de fruit'} options={options} isJsonObject={true}/>
+                    <Row>
+                        <SelectorComponent key={'juice'} cle={'juice'} titre={'Selectionner un jus de fruit'} options={options} selectionChange={this.onSelectionJuice.bind(this)} isJsonObject={true}/>
                         <Col sm={12} md={6}>
                             <div>
                                 <h5>Nombres de personnes</h5>
@@ -88,9 +120,9 @@ class CreationComponent extends Component {
                             </div>
                         </Col>
                     </Row>
-                    <Row form>
-                        <Col sm={12} md={6} mdOffset={3} componentClass="bottom-button">
-                            <Button color="secondary" size="lg" onClick={this.generateSmoothie} block>Générer le smoothie</Button>
+                    <Row>
+                        <Col sm={10} smOffset={1} md={6} mdOffset={3}>
+                            <Button color="secondary" size="lg" onClick={() => this.generateSmoothie()} block>Générer le smoothie</Button>
                         </Col>
                     </Row>
                 </Form>

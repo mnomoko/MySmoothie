@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {Col, ControlLabel, FormControl, FormGroup} from "react-bootstrap";
+import {Col} from "react-bootstrap";
+import Select from 'react-select';
 
 class SelectorComponent extends Component {
 
@@ -9,40 +10,45 @@ class SelectorComponent extends Component {
         this.state = {
             sm: props.sm || 12,
             md: props.md || 6,
+            cle: props.cle,
             titre: props.titre,
             options: props.options || [],
-            getNameFn: props.isJsonObject ? this.getNameFromObject : this.getNameProperty
+            onChange: props.selectionChange,
+            selectedValue: props.selected || props.options[0]
+        };
+    }
+
+    static getDerivedStateFromProps(nextProps, prevState){
+        if(nextProps.options!==prevState.options){
+            return { options: nextProps.options};
+        }
+        else return null;
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if(prevState.options === this.state.options && prevProps.options!==this.props.options){
+            this.setState({options: this.props.options});
         }
     }
 
+    change = (option) => {
+        let { cle, onChange } = this.state;
+        onChange(cle, option);
+        this.setState({selectedValue: option});
+    };
+
     render() {
-        let { sm, md, titre, options } = this.state;
+        let { sm, md, options, selectedValue, titre } = this.state;
         return (
             <Col sm={sm} md={md}>
-                <FormGroup controlId="formControlsSelect">
-                    <ControlLabel> {titre} </ControlLabel>
-                    <FormControl componentClass="select" placeholder="select">
-                        {options.map(option => (
-                            <option key={option.id} value={option.text}>
-                                {this.getName(option)}
-                            </option>
-                        ))}
-                    </FormControl>
-                </FormGroup>
+                <label>{titre}</label>
+                <Select
+                    value={selectedValue}
+                    onChange={this.change}
+                    options={options}
+                />
             </Col>
         );
-    }
-
-    getName(option) {
-        return this.state.getNameFn(option);
-    }
-
-    getNameFromObject(value) {
-        return Object.keys(value)[0];
-    }
-
-    getNameProperty(value) {
-        return value.name;
     }
 }
 
