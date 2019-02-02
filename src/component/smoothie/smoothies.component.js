@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import {Grid, Panel, Row} from "react-bootstrap";
 import CardComponent from "../commons/modulable/card.component";
 import SmoothieComponent from "./smoothie.component";
-const smoothies = require('../commons/smoothies');
+import SMOOTHIES from '../commons/smoothies';
+
+const AFFICHER_LA_RECETTE = 'Afficher la recette';
 
 class SmoothiesComponent extends Component {
 
@@ -29,23 +31,16 @@ class SmoothiesComponent extends Component {
     render() {
         return(
             <div style={{margin: 10}}>
-                <Panel id="collapsible-panel-example-2" defaultExpanded>
-                    <Panel.Heading>
-                        <Panel.Title toggle>
-                            Title that functions as a collapse toggle
-                        </Panel.Title>
-                    </Panel.Heading>
-                    <Panel.Collapse>
-                        <Panel.Body>
-                            <Grid>
-                                <Row>
-                                    {smoothies && smoothies.map(smoothie =>
-                                        <CardComponent title={smoothie.name} description={smoothie.description} click={() => this.handleShow(smoothie)}/>
-                                    )}
-                                </Row>
-                            </Grid>
-                        </Panel.Body>
-                    </Panel.Collapse>
+                <Panel id="collapsible-panel-example-2">
+                    <Panel.Body>
+                        <Grid>
+                            <Row>
+                                {SMOOTHIES && SMOOTHIES.map(smoothie =>
+                                    <CardComponent title={smoothie.name} description={smoothie.description} buttonTitle={AFFICHER_LA_RECETTE} click={() => this.handleShow(smoothie)}/>
+                                )}
+                            </Row>
+                        </Grid>
+                    </Panel.Body>
                 </Panel>
                 <SmoothieComponent show={this.state.show} smoothie={this.state.selectedSmoothie} onhide={this.handleClose}/>
             </div>

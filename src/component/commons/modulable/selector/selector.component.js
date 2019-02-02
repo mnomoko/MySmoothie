@@ -14,7 +14,9 @@ class SelectorComponent extends Component {
             titre: props.titre,
             options: props.options || [],
             onChange: props.selectionChange,
-            selectedValue: props.selected || props.options[0]
+            clearOptionsOnUpdate: props.clearListOnUpdate,
+
+            selectedValue: undefined
         };
     }
 
@@ -26,15 +28,17 @@ class SelectorComponent extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if(prevState.options === this.state.options && prevProps.options!==this.props.options){
-            this.setState({options: this.props.options});
+        if(prevState.options !== this.state.options && prevProps.options!==this.props.options){
+            if(this.state.clearOptionsOnUpdate) {
+                this.change(null);
+            }
         }
     }
 
     change = (option) => {
         let { cle, onChange } = this.state;
         onChange(cle, option);
-        this.setState({selectedValue: option});
+        this.setState({selectedValue: option})
     };
 
     render() {

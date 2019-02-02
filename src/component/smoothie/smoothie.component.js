@@ -45,24 +45,16 @@ class SmoothieComponent extends Component {
                             <Modal.Title>{smoothie.name}</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
-                            <h4>Description</h4>
-                            <p>
-                                {smoothie.description}
-                            </p>
-
-                            <hr/>
-
+                            <p>{smoothie.description}</p>
                             <h4>Préparation</h4>
-                            <p>
-                                Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-                                dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta
-                                ac consectetur ac, vestibulum at eros.
-                            </p>
-                            <p>
-                                Praesent commodo cursus magna, vel scelerisque nisl consectetur
-                                et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor
-                                auctor.
-                            </p>
+                            <ul>
+                                {smoothie.fruits.map(i => {
+                                    return <li>{i.preparation}</li>
+                                })}
+                                <li>Ajoutez les fruits dans le blender</li>
+                                <li>Ajoutez le {smoothie.jus.name} dans le blender</li>
+                                <li>Mixez et servez</li>
+                            </ul>
                         </Modal.Body>
                         <Modal.Footer>
                             <Button onClick={this.handleClose}>Close</Button>

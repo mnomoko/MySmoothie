@@ -12,17 +12,19 @@ class CardComponent extends Component {
             title: props.title,
             description: props.description,
             onclick: props.click,
+            buttonTitle: props.buttonTitle,
         }
     }
 
     render() {
+        let { md, xs, title, description, onclick, buttonTitle } = this.state;
         return(
-            <Col xs={this.state.xs} md={this.state.md}>
+            <Col xs={xs} md={md}>
                 <Panel>
                     <div style={{margin: 10}}>
-                        <h3>{this.state.title}</h3>
-                        <p>{this.state.description}</p>
-                        <Button bsStyle="primary" bsSize="large" onClick={this.state.onclick} block>Button</Button>
+                        <h3>{title}</h3>
+                        <p>{description}</p>
+                        <Button bsStyle="primary" bsSize="large" onClick={onclick} block>{buttonTitle}</Button>
                     </div>
                 </Panel>
             </Col>
