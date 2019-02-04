@@ -36,10 +36,6 @@ class CreationComponent extends Component {
             smoothieDescription: ""
         };
 
-        this.onCheckboxNumberClick = this.onCheckboxNumberClick.bind(this);
-        this.onCheckboxNumberPersClick = this.onCheckboxNumberPersClick.bind(this);
-        this.onCheckboxTypeClick = this.onCheckboxTypeClick.bind(this);
-
         this.handleShow = this.handleShow.bind(this);
         this.handleClose = this.handleClose.bind(this);
     }
@@ -55,6 +51,11 @@ class CreationComponent extends Component {
 
     onCheckboxNumberClick(numberSelected) {
         this.setState({ numberSelected });
+
+        if(this.state.selectedSmoothieArray.length > numberSelected) {
+            let arrayCopy = this.state.selectedSmoothieArray.slice(0, numberSelected);
+            this.setState({selectedSmoothieArray: arrayCopy});
+        }
     }
 
     onCheckboxNumberPersClick(numberPersSelected) {
@@ -106,8 +107,6 @@ class CreationComponent extends Component {
     generateSmoothie() {
         let { selectedJuice, selectedSmoothieArray } = this.state;
 
-        // let name = this.smoothieName.value;
-        // let description = this.smoothieDescription.value;
         let name = this.state.smoothieName;
         let description = this.state.smoothieDescription;
         let fruits = [];
@@ -125,8 +124,6 @@ class CreationComponent extends Component {
         this.setState({selectedSmoothie: smoothie}, () => {
             this.handleShow(smoothie);
         });
-
-        // return smoothie;
     }
 
     handleClose() {
@@ -138,8 +135,8 @@ class CreationComponent extends Component {
     }
 
     isGenerateButtonDisable() {
-        const { selectedJuice, selectedSmoothieArray } = this.state;
-        return !selectedJuice || !selectedSmoothieArray || !selectedSmoothieArray.every(e => e !== null);
+        const { selectedJuice, selectedSmoothieArray, smoothieName, smoothieDescription, numberSelected } = this.state;
+        return !smoothieName || !smoothieDescription || !selectedJuice || !selectedSmoothieArray || !selectedSmoothieArray.length || selectedSmoothieArray.length !== numberSelected;
     }
 
     onChangeName(e) {
@@ -179,13 +176,13 @@ class CreationComponent extends Component {
                                 </ButtonGroup>
                             </div>
                         </Col>
-                        <RadioComponent title={'Nombre de personnes'} titleLeft={'1 personne'} titleRight={'2 personnes'} valueLeft={1} valueRight={2} defaultValue={this.state.numberPersSelected} onclick={this.onCheckboxNumberPersClick}/>
+                        <RadioComponent title={'Nombre de personnes'} titleLeft={'1 personne'} titleRight={'2 personnes'} valueLeft={1} valueRight={2} defaultValue={this.state.numberPersSelected} onclick={this.onCheckboxNumberPersClick.bind(this)}/>
                     </Row>
                     <Row style={{ marginTop: 15 }}>
                         <Col sm={12} md={12}>
                             <Form.Group controlId="exampleForm">
                                 <Form.Label><h5><b>Description</b></h5></Form.Label>
-                                <Form.Control name="smoothieDescription" as="textarea" rows="3" value={this.state.smoothieDescription} onChange={this.onChangeDescription.bind(this)}/>
+                                <Form.Control style={{resize: 'none'}} name="smoothieDescription" as="textarea" rows="3" value={this.state.smoothieDescription} onChange={this.onChangeDescription.bind(this)}/>
                             </Form.Group>
                         </Col>
                     </Row>
