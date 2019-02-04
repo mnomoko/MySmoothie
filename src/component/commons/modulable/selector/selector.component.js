@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Col} from "react-bootstrap";
+import Col from "react-bootstrap/Col";
 import Select from 'react-select';
 
 class SelectorComponent extends Component {
@@ -45,7 +45,7 @@ class SelectorComponent extends Component {
         let { sm, md, options, selectedValue, titre } = this.state;
         return (
             <Col sm={sm} md={md}>
-                <label>{titre}</label>
+                <label><h5><b>{titre}</b></h5></label>
                 <Select
                     value={selectedValue}
                     onChange={this.change}

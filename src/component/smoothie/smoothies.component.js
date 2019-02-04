@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import {Grid, Panel, Row} from "react-bootstrap";
-import CardComponent from "../commons/modulable/card.component";
+import {Card, Container, Row} from "react-bootstrap/es";
+import CardComponent from "../commons/modulable/card/card.component";
 import SmoothieComponent from "./smoothie.component";
-import SMOOTHIES from '../commons/smoothies';
+import SMOOTHIES from '../commons/data/smoothies';
 
 const AFFICHER_LA_RECETTE = 'Afficher la recette';
 
@@ -31,17 +31,17 @@ class SmoothiesComponent extends Component {
     render() {
         return(
             <div style={{margin: 10}}>
-                <Panel id="collapsible-panel-example-2">
-                    <Panel.Body>
-                        <Grid>
+                <Card id="collapsible-panel-example-2">
+                    <Card.Body>
+                        <Container>
                             <Row>
                                 {SMOOTHIES && SMOOTHIES.map(smoothie =>
                                     <CardComponent title={smoothie.name} description={smoothie.description} buttonTitle={AFFICHER_LA_RECETTE} click={() => this.handleShow(smoothie)}/>
                                 )}
                             </Row>
-                        </Grid>
-                    </Panel.Body>
-                </Panel>
+                        </Container>
+                    </Card.Body>
+                </Card>
                 <SmoothieComponent show={this.state.show} smoothie={this.state.selectedSmoothie} onhide={this.handleClose}/>
             </div>
         )
