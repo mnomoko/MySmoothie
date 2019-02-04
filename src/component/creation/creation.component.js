@@ -105,10 +105,10 @@ class CreationComponent extends Component {
     }
 
     generateSmoothie() {
-        let { selectedJuice, selectedSmoothieArray } = this.state;
+        let { selectedJuice, selectedSmoothieArray, smoothieName, smoothieDescription } = this.state;
 
-        let name = this.state.smoothieName;
-        let description = this.state.smoothieDescription;
+        let name = smoothieName;
+        let description = smoothieDescription;
         let fruits = [];
         selectedSmoothieArray.forEach(e => {
             let fruit = this.getFruitById(e.value.id);
@@ -117,9 +117,6 @@ class CreationComponent extends Component {
         let jus = this.getJuiceById(selectedJuice.value.id);
 
         let smoothie = new Smoothie(name, fruits, jus, description);
-        console.log(JSON.stringify(name));
-        console.log(JSON.stringify(description));
-        console.log(JSON.stringify(smoothie));
 
         this.setState({selectedSmoothie: smoothie}, () => {
             this.handleShow(smoothie);

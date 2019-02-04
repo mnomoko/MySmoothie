@@ -7,7 +7,7 @@ class NavBarComponent extends Component {
     render() {
         return (
             <Navbar bg="dark" variant="dark">
-                <Navbar.Brand href="#home">My Smoothie</Navbar.Brand>
+                <Navbar.Brand href="/">My Smoothie</Navbar.Brand>
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="mr-auto">
                         <Nav.Link href="/smoothies">Smoothies</Nav.Link>
