@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import {Card, Container, Row} from "react-bootstrap/es";
 import CardComponent from "../commons/modulable/card/card.component";
 import SmoothieComponent from "./smoothie.component";
-import SMOOTHIES from '../commons/data/smoothies';
+// import SMOOTHIES from '../commons/data/smoothies';
+import SmoothieService from "../commons/service/smoothie.service";
 
 const AFFICHER_LA_RECETTE = 'Afficher la recette';
 
@@ -16,8 +17,14 @@ class SmoothiesComponent extends Component {
 
         this.state = {
             show: false,
-            selectedSmoothie: undefined
+            isReady: false,
+            selectedSmoothie: undefined,
+            smoothies: []
         };
+
+        this.getSmoothies().then((smoothies) => {
+            this.setState({ smoothies: smoothies, isReady: true });
+        });
     }
 
     handleClose() {
@@ -28,23 +35,42 @@ class SmoothiesComponent extends Component {
         this.setState({ show: true, selectedSmoothie: smoothie });
     }
 
+    getSmoothies() {
+        return new Promise(async (resolve, reject) => {
+            const smoothies = await SmoothieService.getSmoothies();
+            return resolve(smoothies);
+        });
+    }
+
+    init = async() => {
+        return await SmoothieService.getSmoothies();
+    };
+
     render() {
-        return(
-            <div style={{margin: 10}}>
-                <Card id="collapsible-panel-example-2">
-                    <Card.Body>
-                        <Container>
-                            <Row>
-                                {SMOOTHIES && SMOOTHIES.map(smoothie =>
-                                    <CardComponent title={smoothie.name} description={smoothie.description} buttonTitle={AFFICHER_LA_RECETTE} click={() => this.handleShow(smoothie)}/>
-                                )}
-                            </Row>
-                        </Container>
-                    </Card.Body>
-                </Card>
-                <SmoothieComponent show={this.state.show} smoothie={this.state.selectedSmoothie} onhide={this.handleClose}/>
-            </div>
-        )
+        const { smoothies, isReady } = this.state;
+        if(isReady) {
+            return (
+                <div style={{margin: 10}}>
+                    <Card id="collapsible-panel-example-2">
+                        <Card.Body>
+                            <Container>
+                                <Row>
+                                    {smoothies && smoothies.map(smoothie =>
+                                        <CardComponent title={smoothie.name} description={smoothie.description}
+                                                       buttonTitle={AFFICHER_LA_RECETTE}
+                                                       click={() => this.handleShow(smoothie)}/>
+                                    )}
+                                </Row>
+                            </Container>
+                        </Card.Body>
+                    </Card>
+                    <SmoothieComponent show={this.state.show} smoothie={this.state.selectedSmoothie}
+                                       onhide={this.handleClose}/>
+                </div>
+            )
+        }
+        else
+            return null;
     }
 
 }
