@@ -14,7 +14,8 @@
     "react-select": "^2.1.2"
   },
   "scripts": {
-    "start": "REACT_APP_API_URL='http://localhost' REACT_APP_API_PORT=4000 react-scripts start",
+    "dev": "REACT_APP_API_URL='http://localhost' REACT_APP_API_PORT=4000 react-scripts start",
+    "start": "REACT_APP_API_URL='https://mn-mysmoothie-api-8080.herokuapp.com' react-scripts start",
     "build": "REACT_APP_API_URL='https://mn-mysmoothie-api-8080.herokuapp.com' react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
