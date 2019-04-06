@@ -9,5 +9,19 @@ class UrlService {
 
         return `${API_URL}${getApiPort()}`;
     }
+
+    getPostData = (data) => {
+        return {
+            method: 'POST',
+            headers : {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Headers': '*'
+            },
+            mode: 'cors',
+            body: JSON.stringify(data)
+        }
+    };
 }
 export default new UrlService();

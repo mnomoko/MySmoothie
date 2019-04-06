@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import SelectorComponent from "../commons/modulable/selector/selector.component";
 import '../../index.css';
-// import FRUITS from './../commons/data/fruits';
-import JUICES from './../commons/data/juices';
+import { JUICES, Juice } from './../commons/data/juices';
 import RadioComponent from "../commons/modulable/radio/radio.component";
 import Smoothie from "../commons/model/smoothie";
 import SmoothieComponent from "../smoothie/smoothie.component";
@@ -12,6 +11,7 @@ import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import FruitService from "../commons/service/fruit.service";
+import SmoothieService from "../commons/service/smoothie.service";
 
 class CreationComponent extends Component {
 
@@ -110,9 +110,8 @@ class CreationComponent extends Component {
         return fruits[fruit[0]];
     }
 
-    getJuiceById(id) {
-        let fruit = this.getEnumById(JUICES, id);
-        return JUICES[fruit[0]];
+    getJuiceByCode(code) {
+        return new Juice().getByCode(code);
     }
 
     getEnumById(array, id) {
@@ -129,12 +128,14 @@ class CreationComponent extends Component {
             let fruit = this.getFruitById(e.value.id);
             fruits.push(fruit);
         });
-        let jus = this.getJuiceById(selectedJuice.value.id);
+        let jus = this.getJuiceByCode(selectedJuice.value.code);
 
         let smoothie = new Smoothie(name, fruits, jus, description);
 
-        this.setState({selectedSmoothie: smoothie}, () => {
-            this.handleShow(smoothie);
+        SmoothieService.createSmoothie(smoothie).then(() => {
+            this.setState({selectedSmoothie: smoothie}, () => {
+                this.handleShow(smoothie);
+            });
         });
     }
 
